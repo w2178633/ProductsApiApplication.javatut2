@@ -17,7 +17,5 @@ public class Product {
 
     public String getName() { return name; }
 
-    //The name of the product is no longer displayed after I type the ID and press execute
-
     public double getPrice() { return price; }
 }
