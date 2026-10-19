@@ -1,15 +1,39 @@
 package uk.ac.westminster.products_api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import uk.ac.westminster.products_api.Product;
+import uk.ac.westminster.products_api.ProductService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 @RestController
-@RequestMapping("/products")
-
 public class ProductController {
-    @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return new Product(id, "Laptop", 999.99);
+    // Spring creates the ProductService and hands it over.
+// We never write new ProductService() ourselves.
+    @Autowired
+    private ProductService productService;
+    // ---- task 7 ----
+    @GetMapping("/products")
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+    // ---- task 9 ----
+    @GetMapping("/products/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id).orElse(null);
+    }
+    // ---- task 10 ----
+    @PostMapping("/products")
+    public Product addProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
+    }
+    // ---- task 13 ----
+    @DeleteMapping("/products/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
+    // ---- task 17 ----
+    @GetMapping("/products/search")
+    public List<Product> search(@RequestParam String name) {
+        return productService.findByName(name);
     }
 }
