@@ -2,9 +2,11 @@ package uk.ac.westminster.products_api;
 
 import uk.ac.westminster.products_api.Product;
 
-public class DigitalProduct extends Product {
+public class DigitalProduct extends Product
+        implements Discountable {
     private String downloadUrl;
     private double fileSizeMB;
+    private double discountedPrice;
     public DigitalProduct() {
     }
     public DigitalProduct(Long id, String name, double price,
@@ -12,6 +14,23 @@ public class DigitalProduct extends Product {
         super(id, name, price);
         this.downloadUrl = downloadUrl;
         this.fileSizeMB = fileSizeMB;
+        this.discountedPrice = price; // no discount applied yet
+    }
+    @Override
+    public String getSummary() {
+
+        return "Digital: " + getName()
+                + " | Download: " + downloadUrl;
+    }
+    @Override
+    public void applyDiscount(double rate) {
+// TODO: nothing is shipped, so the full rate applies
+        this.discountedPrice = getPrice() * (1 - rate);
+    }
+    @Override
+    public double getDiscountedPrice() {
+        // TODO: return the field
+        return discountedPrice;
     }
     public String getDownloadUrl() { return downloadUrl; }
     public double getFileSizeMB() { return fileSizeMB; }
